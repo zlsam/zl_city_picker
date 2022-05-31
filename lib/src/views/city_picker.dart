@@ -56,72 +56,71 @@ class _CityPickerState extends State<CityPicker> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-          TabBar(
-              controller: _tabController,
-              labelColor: widget.labelColor,
-              indicatorSize: TabBarIndicatorSize.label,
-              unselectedLabelColor: widget.unselectedLabelColor,
-              tabs: _tabList
-                  .map((e) => Container(
-                        width: widget.labelWidth ??
-                            MediaQuery.of(context).size.width / _tabList.length,
-                        child: Tab(
-                          text: e,
-                        ),
-                      ))
-                  .toList()),
-          Expanded(
-              child: TabBarView(
-                  controller: _tabController,
-                  physics: widget.physics ?? NeverScrollableScrollPhysics(),
-                  children: _tabList
-                      .asMap()
-                      .keys
-                      .map((e) => ListViews(_listData,
-                              onTap: (CodeModel items) {
-                            _selectItems(items);
+      children: [
+        TabBar(
+            controller: _tabController,
+            labelColor: widget.labelColor,
+            indicatorSize: TabBarIndicatorSize.label,
+            unselectedLabelColor: widget.unselectedLabelColor,
+            tabs: _tabList
+                .map((e) => Container(
+                      width: widget.labelWidth ??
+                          MediaQuery.of(context).size.width / _tabList.length,
+                      child: Tab(
+                        text: e,
+                      ),
+                    ))
+                .toList()),
+        Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                physics: widget.physics ?? NeverScrollableScrollPhysics(),
+                children: _tabList
+                    .asMap()
+                    .keys
+                    .map((e) => ListViews(_listData, onTap: (CodeModel items) {
+                          _selectItems(items);
 
-                            if (items.children != null &&
-                                ((_currentIndex == 0 && _tabList.length == 1) ||
-                                    (_currentIndex == 1 &&
-                                        _tabList.length == 2))) {
-                              _currentIndex += 1;
-                              _addTabBar();
-                            } else {
-                              if (_currentIndex < 2 && items.children != null) {
-                                _tabController?.animateTo(_currentIndex + 1);
-                              }
+                          if (items.children != null &&
+                              ((_currentIndex == 0 && _tabList.length == 1) ||
+                                  (_currentIndex == 1 &&
+                                      _tabList.length == 2))) {
+                            _currentIndex += 1;
+                            _addTabBar();
+                          } else {
+                            if (_currentIndex < 2 && items.children != null) {
+                              _tabController?.animateTo(_currentIndex + 1);
                             }
+                          }
 
-                            if (items.children != null) {
-                              if (_currentIndex == 1) {
-                                _cityData = items.children as List<CodeModel>;
-                                _listData = _cityData;
-                              }
-                              if (_currentIndex == 2) {
-                                _areaData = items.children as List<CodeModel>;
-                                _listData = _areaData;
-                              }
-                            } else {
-                              if (_currentIndex == 0) {
-                                _cityData.clear();
-                              }
-                              if (_currentIndex == 1) {
-                                _areaData.clear();
-                              }
-                              Navigator.of(context).pop(_selectData);
+                          if (items.children != null) {
+                            if (_currentIndex == 1) {
+                              _cityData = items.children as List<CodeModel>;
+                              _listData = _cityData;
                             }
-                            if (mounted) {
-                              setState(() {});
+                            if (_currentIndex == 2) {
+                              _areaData = items.children as List<CodeModel>;
+                              _listData = _areaData;
                             }
-                          },
-                              selectColor: widget.selectColor,
-                              selectData: _selectData,
-                              tabIndex: _currentIndex))
-                      .toList()))
-        ],
-      );
+                          } else {
+                            if (_currentIndex == 0) {
+                              _cityData.clear();
+                            }
+                            if (_currentIndex == 1) {
+                              _areaData.clear();
+                            }
+                            Navigator.of(context).pop(_selectData);
+                          }
+                          if (mounted) {
+                            setState(() {});
+                          }
+                        },
+                            selectColor: widget.selectColor,
+                            selectData: _selectData,
+                            tabIndex: _currentIndex))
+                    .toList()))
+      ],
+    );
   }
 
   @override
